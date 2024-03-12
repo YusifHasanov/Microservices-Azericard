@@ -161,6 +161,16 @@ docker-compose up -d
 | `cvv` | `decimal` | **Required**. Cvv of payment card |
 | `cardNumber` | `string` | **Required**. CardNumber of payment card |
  
+#### List of user transactions
+
+```http
+  GET /user-service/user/transaction
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Required**. On Request Header |
+ 
 
 
 ## Architecture
