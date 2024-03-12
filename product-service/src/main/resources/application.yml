@@ -1,0 +1,35 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product-service-db
+    driverClassName: org.postgresql.Driver
+    username: user
+    password: 123456789
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+
+springdoc:
+  swagger-ui:
+    enabled: true

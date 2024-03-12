@@ -1,0 +1,44 @@
+server:
+  port: 8010
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driverClassName: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: https://www.azericard.com
+          audiences: https://www.azericard.com
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+      instance:
+        prefer-ip-address: true
+        hostname: eureka-server
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: DEBUG
+    springframework:
+      context: DEBUG
+
+jwt:
+  secret: asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4
+  expiration: 3600000
+
+springdoc:
+  swagger-ui:
+    enabled: true

@@ -1,0 +1,42 @@
+server:
+  port: 0
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user-service-db
+    driverClassName: org.postgresql.Driver
+    username: user
+    password: 123456789
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: https://idp.example.com/issuer
+          audiences: https://api.example.com
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+      instance:
+        prefer-ip-address: true
+        hostname: eureka-server
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+
+jwt:
+  secret: asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4
+  expiration: 3600000
+
+springdoc:
+  swagger-ui:
+    enabled: true

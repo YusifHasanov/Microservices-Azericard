@@ -1,0 +1,133 @@
+version: '3.8'
+services:
+  eureka-server:
+    build: ./eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+        - ms-network
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+    networks:
+        - ms-network
+
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8081:8080"
+    depends_on:
+      - eureka-server
+      - user-service-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-service-db:5432/user-service-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 123456789
+      SPRING_RABBITMQ_HOST: rabbitmq
+
+
+  user-service-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: user-service-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456789
+    volumes:
+      - user-db-volume:/var/lib/postgresql/data
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8082:8080"
+    depends_on:
+      - eureka-server
+      - payment-service-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://payment-service-db:5432/payment-service-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 123456789
+      SPRING_RABBITMQ_HOST: rabbitmq
+
+
+  payment-service-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: payment-service-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456789
+    volumes:
+      - payment-db-volume:/var/lib/postgresql/data
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "8083:8080"
+    depends_on:
+      - eureka-server
+      - product-service-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://product-service-db:5432/product-service-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 123456789
+      SPRING_RABBITMQ_HOST: rabbitmq
+
+
+  product-service-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: product-service-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456789
+    volumes:
+      - product-db-volume:/var/lib/postgresql/data
+
+
+  card-service:
+    build: ./card-service
+    ports:
+      - "8084:8080"
+    depends_on:
+      - eureka-server
+      - card-service-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://card-service-db:5432/card-service-db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 123456789
+      SPRING_RABBITMQ_HOST: rabbitmq
+
+
+  card-service-db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: card-service-db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456789
+    volumes:
+      - card-db-volume:/var/lib/postgresql/data
+
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+
+
+volumes:
+  user-db-volume:
+  payment-db-volume:
+  product-db-volume:
+  card-db-volume:
+  rabbitmq-data:
+
+networks:
+  ms-network:
+    driver: bridge
