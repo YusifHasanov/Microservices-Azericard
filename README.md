@@ -58,7 +58,7 @@ For each microservice, you need to navigate to its directory and execute the bui
 If using Docker, you can run a RabbitMQ container:
 
 ```sh
-docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
+docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
 ```
 5. **Start each microservice. You can use Gradle to run the Spring Boot application:**
 
@@ -78,29 +78,89 @@ docker-compose up -d
 
 ## API Reference
 
-#### Get all items
+**Some endpoints**
+
+#### Register
 
 ```http
-  GET /api/items
+  POST /user-service/user/register
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
+| `name` | `string` | **Required**. Name |
+| `surname` | `string` | **Required**. Surname |
+| `email` | `string` | **Required**. Email address |
+| `password` | `string` | **Required**. Password |
+| `confirmPassword` | `string` | **Required**. Confirm Password |
+| `phoneNumber` | `string` | **Required**. Phone number |
 
-#### Get item
+
+#### Login
 
 ```http
-  GET /api/items/${id}
+  POST /user-service/user/login
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `email` | `string` | **Required**. Email address |
+| `password` | `string` | **Required**. Password |
 
-#### add(num1, num2)
+#### Add new  card to user
 
-Takes two numbers and returns the sum.
+```http
+  POST /card-service/card/create
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Required**. On Request Header |
+ 
+ #### Get user cards
+
+```http
+  Get /card-service/card/by-user
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Required**. On Request Header |
+ 
+
+#### Create new product
+
+```http
+  POST /product-service/product/create
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `name` | `string` | **Required**. Product Name |
+| `stock` | `decimal` | **Required**. Product stock number |
+| `price` | `decimal` | **Required**. Product sale price |
+
+
+#### Read all avaliable products
+
+```http
+  GET /product-service/product
+```
+
+
+#### Buy product
+
+```http
+  POST /payment-service/payment/pay
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `productId` | `string` | **Required**. Id of purchase product |
+| `count` | `decimal` | **Required**. Count of product |
+| `cvv` | `decimal` | **Required**. Cvv of payment card |
+| `cardNumber` | `string` | **Required**. CardNumber of payment card |
+ 
 
 
 ## Architecture
