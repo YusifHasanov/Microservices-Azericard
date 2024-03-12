@@ -77,5 +77,3 @@ We welcome contributions to improve the system. Please fork the repository and s
 
 License
 Specify your license here.
-
-Make sure to replace placeholder texts (like https://your-repository-url.git) with actual values relevant to your project. This README template provides a basic structure, so feel free to expand it with more details specific to your implementation, such as setup instructions for individual microservices, additional configuration details, or documentation links for the technologies used.
