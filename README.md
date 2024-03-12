@@ -58,7 +58,7 @@ For each microservice, you need to navigate to its directory and execute the bui
 If using Docker, you can run a RabbitMQ container:
 
 ```sh
-docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
 ```
 5. **Start each microservice. You can use Gradle to run the Spring Boot application:**
 
